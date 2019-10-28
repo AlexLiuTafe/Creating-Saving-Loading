@@ -5,23 +5,23 @@ using UnityEngine;
 
 public class Game : PersistableObject
 {
-   
-    public PersistableObject prefab;
+
+    public ShapeFactory shapeFactory;
     public KeyCode createKey = KeyCode.C;
     public KeyCode newGameKey = KeyCode.N;
     public KeyCode saveKey = KeyCode.S;
     public KeyCode loadKey = KeyCode.L;
-    List<PersistableObject> objects;
+    List<Shape> shapes;
 
     private void Awake()
     {
-        objects = new List<PersistableObject>();
+        shapes = new List<Shape>();
     }
     private void Update()
     {
         if (Input.GetKeyDown(createKey))
         {
-            CreateObject();
+            CreateShape();
         }
         else if (Input.GetKey(newGameKey))
         {
@@ -37,30 +37,30 @@ public class Game : PersistableObject
             storage.Load(this);
         }
     }
-    void CreateObject()
+    void CreateShape()
     {
-        PersistableObject o = Instantiate(prefab);
-        Transform t = o.transform;
+        Shape instance = shapeFactory.GetRandom();
+        Transform t = instance.transform;
         t.localPosition = Random.insideUnitSphere * 5f;
         t.localRotation = Random.rotation;
         t.localScale = Vector3.one * Random.Range(0.1f, 1f);
-        objects.Add(o);
+        shapes.Add(instance);
     }
     void BeginNewGame()
     {
-        for (int i = 0; i < objects.Count; i++)
+        for (int i = 0; i < shapes.Count; i++)
         {
-            Destroy(objects[i].gameObject);
+            Destroy(shapes[i].gameObject);
         }
-        objects.Clear();
+        shapes.Clear();
         
     }
     public override void Save(GameDataWriter writer)
     {
-        writer.Write(objects.Count);
-        for (int i = 0; i < objects.Count; i++)
+        writer.Write(shapes.Count);
+        for (int i = 0; i < shapes.Count; i++)
         {
-            objects[i].Save(writer);
+            shapes[i].Save(writer);
         }
     }
     public override void Load(GameDataReader reader)
@@ -68,9 +68,9 @@ public class Game : PersistableObject
         int count = reader.ReadInt();
         for (int i = 0; i < count; i++)
         {
-            PersistableObject o = Instantiate(prefab);
-            o.Load(reader);
-            objects.Add(o);
+            Shape instance = shapeFactory.Get(0);
+            instance.Load(reader);
+            shapes.Add(instance);
         }
     }
 
