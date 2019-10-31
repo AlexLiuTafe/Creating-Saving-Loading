@@ -16,5 +16,5 @@ public class PersistableObject : MonoBehaviour
         transform.localRotation = reader.ReadQuaternion();
         transform.localScale = reader.ReadVector3();
     }
-    
+	
 }
