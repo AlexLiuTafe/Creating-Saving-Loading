@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class Game : PersistableObject
@@ -21,9 +22,20 @@ public class Game : PersistableObject
 	float creationProgress;
 	public float DestructionSpeed { get; set; }
 	float destructionProgress;
-	private void Awake()
+	private void Start()
 	{
 		shapes = new List<Shape>();
+		if(Application.isEditor)
+		{
+			Scene loadedLevel = SceneManager.GetSceneByName("Level 1");
+			if (loadedLevel.isLoaded)
+			{
+				SceneManager.SetActiveScene(loadedLevel);
+				return;
+			}
+		}
+		
+		StartCoroutine(LoadLevel());
 	}
 	private void Update()
 	{
@@ -62,6 +74,15 @@ public class Game : PersistableObject
 			DestroyShape();
 		}
 	}
+	IEnumerator LoadLevel()
+	{
+		//So the player cannot issue Command while loading the scene
+		enabled = false;
+		yield return SceneManager.LoadSceneAsync("Level 1", LoadSceneMode.Additive);
+		SceneManager.SetActiveScene(SceneManager.GetSceneByName("Level 1"));
+		enabled = true;
+	}
+
 	void CreateShape()
 	{
 		Shape instance = shapeFactory.GetRandom();
