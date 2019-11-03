@@ -3,6 +3,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class PersistableObject : MonoBehaviour
 {
+
     public PersistentStorage storage;
     public virtual void Save (GameDataWriter writer)
     {

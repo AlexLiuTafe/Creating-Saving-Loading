@@ -320,14 +320,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   storage: {fileID: 1796218753}
+  creationSpeedSlider: {fileID: 145386047}
+  destructionSpeedSlider: {fileID: 1797156836}
   shapeFactory: {fileID: 11400000, guid: 1d7d39bac31f9e64db647ea8957c66ea, type: 2}
   createKey: 99
   destroyKey: 120
   newGameKey: 110
   saveKey: 115
   loadKey: 108
-  levelCount: 3
+  levelCount: 4
   loadedLevelBuildIndex: 0
+  reseedOnLoad: 0
 --- !u!4 &261555326
 Transform:
   m_ObjectHideFlags: 0

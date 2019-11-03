@@ -58,7 +58,6 @@ public class Shape : PersistableObject
 
 	public override void Load(GameDataReader reader)
 	{
-		int version = reader.Version;
 		base.Load(reader);
 		SetColor(reader.Version > 0 ? reader.ReadColor() : Color.white);
 	}
